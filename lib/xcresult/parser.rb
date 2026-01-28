@@ -47,7 +47,7 @@ module XCResult
 
       # Exports all xccovreport files from the report references
       ids.each_with_index.map do |id, i|
-        output_path = File.join(destination, "action_#{i}.xccovreport")
+        output_path = File.expand_path(File.join(destination, "action_#{i}.xccovreport"))
         cmd = xcresulttool_command("export", "--path #{path} --id '#{id}' --output-path #{output_path} --type file")
         execute_cmd(cmd)
 
@@ -66,7 +66,7 @@ module XCResult
 
       # Exports all xcovarchive directories from the archive references
       ids.each_with_index.map do |id, i|
-        output_path = File.join(destination, "action_#{i}.xccovarchive")
+        output_path = File.expand_path(File.join(destination, "action_#{i}.xccovarchive"))
         cmd = xcresulttool_command("export", "--path #{path} --id '#{id}' --output-path #{output_path} --type directory")
         execute_cmd(cmd)
 
@@ -77,7 +77,7 @@ module XCResult
     private
 
     def get_result_bundle_json(id: nil)
-      cmd = xcresulttool_command("get", "--format json --path #{path}")
+      cmd = xcresulttool_command("get", "--format json --path #{File.expand_path(path)}")
       cmd += " --id #{id}" if id
       execute_cmd(cmd)
     end
